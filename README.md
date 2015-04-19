@@ -1,6 +1,4 @@
-WifiWizardDemo
+connectON
 ==============
 
-Demo phonegap application for WifiWizard plugin.
-
-Currently written against WifiWizard v0.3.0
+An Android Application built on Corodova for direct access to all registered WiFi networks in a system. 
