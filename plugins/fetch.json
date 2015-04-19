@@ -1,0 +1,8 @@
+{
+    "com.pylonproducts.wifiwizard": {
+        "source": {
+            "type": "registry",
+            "id": "com.pylonproducts.wifiwizard"
+        }
+    }
+}
