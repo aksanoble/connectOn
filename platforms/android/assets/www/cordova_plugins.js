@@ -37,13 +37,6 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/org.apache.cordova.vibration/www/vibration.js",
-        "id": "org.apache.cordova.vibration.notification",
-        "merges": [
-            "navigator.notification"
-        ]
-    },
-    {
         "file": "plugins/com.pylonproducts.wifiwizard/www/WifiWizard.js",
         "id": "com.pylonproducts.wifiwizard.DynamicUpdate",
         "clobbers": [
@@ -57,7 +50,6 @@ module.exports.metadata =
     "org.apache.cordova.device": "0.2.11",
     "org.apache.cordova.dialogs": "0.2.9",
     "org.apache.cordova.network-information": "0.2.11",
-    "org.apache.cordova.vibration": "0.3.10",
     "com.pylonproducts.wifiwizard": "0.2.8"
 }
 // BOTTOM OF METADATA

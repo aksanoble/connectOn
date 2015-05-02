@@ -4,13 +4,15 @@
 <widget id="com.app-o-mat.jqm-cordova-template-project" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
 
 	<!-- Edit to match the details of your app -->
-    <name>jQM Starter App</name>
+    <name>connectON</name>
     <description>
-        A template Apache Cordova application using jQuery Mobile
+        connect everywhere
     </description>
-    <author email="author@example.com" href="http://example.com">
-      Lou Franco
+    <author email="tej@jaaga.in" href="http://jaaga.in">
+      Tej Pochiraju
     </author>
+
+    <icon src="on.jpg" width="57" height="57" />
 	<!-- END App Details -->
 
     <content src="index.html" />

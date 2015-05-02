@@ -7,10 +7,61 @@ http://app-o-mat.com
 MIT License
 https://github.com/app-o-mat/jqm-cordova-template-project/LICENSE.md
 */
-
 /* Make the webviews act less like a browser, and more like an app*/
+
 body {
     -webkit-touch-callout: none;
     -webkit-text-size-adjust: none;
     -webkit-user-select: none;
+}
+
+.ui-icon-connectON:after {
+    background-image: url("../img/on.jpg");
+    /*text-align: center;*/
+    
+    background-size: 40px 40px;
+    max-height: 40px !important;
+    max-width: 40px !important;
+    border-radius: 0px;
+    padding: 10px;
+    top: 50%;
+}
+
+.welcome {
+    text-align: center;
+}
+
+.center {
+    text-align: center;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+#fb_like_button {
+    width: 80px;
+}
+
+#fb_like_button span,
+#fb_like_button iframe {
+    . width: 80px! important;
+    height: 25px! important;
+}
+
+.ui-icon-loading {
+    background: url(http://code.jquery.com/mobile/1.1.0-rc.1/images/ajax-loader.png);
+    background-size: 46px 46px;
+    width:46px;
+    height:46px;
+    -webkit-transform: rotate(360deg);
+    -webkit-animation-name: spin;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-iteration-count:  infinite;
+    -webkit-animation-timing-function: linear;
+}
+@-webkit-keyframes spin {
+    from {-webkit-transform: rotate(0deg);}
+    to {-webkit-transform: rotate(360deg);}
 }

@@ -1,32 +1,69 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<meta charset="utf-8">
-	<meta name="format-detection" content="telephone=no" />
-	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />
-
-	<title>Connect-On</title>
-
-	<link rel="stylesheet" href="css/index.css">
-	<link rel="stylesheet" href="lib/jquery-mobile/css/jquery.mobile-1.4.0.min.css" />
-
-	<script type="text/javascript" src="lib/jquery-mobile/js/jquery-1.11.0.min.js"></script>
-	<script type="text/javascript" src="lib/jquery-mobile/js/jquery.mobile-1.4.0.min.js"></script>
-	<script type="text/javascript" src="js/init.js"></script>
-	<script type="text/javascript" src="js/index.js"></script>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />
+    <title>connectOn</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="lib/jquery-mobile/css/jquery.mobile-1.4.0.min.css" />
+    <script type="text/javascript" src="lib/jquery-mobile/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="lib/jquery-mobile/js/jquery.mobile-1.4.0.min.js"></script>
+    <!-- 
+    <script type="text/javascript" src="js/init.js"></script>
+     -->
+    <script type="text/javascript" src="js/index.js"></script>
 </head>
 
 <body>
-<div data-role="page" id="home">
-	<div data-role="header" data-position="fixed">
-		<h1>WiFi - ON</h1>
-	</div>
-	<button type="button" id="connect" name="auto_Connect">Auto Connect</button>
-</div>
-<script src="http://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
-<script type="text/javascript" src="cordova.js"></script>
-<script type="text/javascript" src="lib/fastclick/js/fastclick.js"></script>
-<script type="text/javascript" src="lib/underscore/underscore.js"></script>
+    <!-- 
+	<script>
+	  window.fbAsyncInit = function() {
+	    FB.init({
+	      appId      : '1747058292187336',
+	      xfbml      : true,
+	      version    : 'v2.3'
+	    });
+	  };
 
+	  (function(d, s, id){
+	     var js, fjs = d.getElementsByTagName(s)[0];
+	     if (d.getElementById(id)) {return;}
+	     js = d.createElement(s); js.id = id;
+	     js.src = "https://connect.facebook.net/en_US/sdk.js";
+	     fjs.parentNode.insertBefore(js, fjs);
+	   }(document, 'script', 'facebook-jssdk'));
+	</script>
+
+    <div
+	  	class="fb-like"
+	  	data-send="true"
+	  	data-width="450"
+	  	data-show-faces="false">
+	</div>
+
+	<div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="standard" data-action="like" data-show-faces="false" data-share="false"></div>
+
+ -->
+
+    <div class="welcome">
+        <p id="location"> Welcome to <span>location!</span> </p>
+    </div>
+    <div class="ui-grid-b center">
+        <div class="ui-block-a"></div>
+        <div class="ui-block-b">
+            <img src="img/on.jpg" alt="connectON" height="42" width="42">
+            <br>
+            <a class="ui-alt-icon ui-btn ui-corner-all ui-nodisc-icon ui-icon-power ui-btn-icon-top ui-btn-inline" id="connect">Connect</a>
+        </div>
+        <div class="ui-block-c"></div>
+    </div>
+    </div>
+    <script src="http://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="lib/fastclick/js/fastclick.js"></script>
+    <script type="text/javascript" src="lib/underscore/underscore.js"></script>
 </body>
+
 </html>

@@ -1,183 +1,145 @@
-$(function(){
-  var app = {
-    // Application Constructor
-    initialize: function() {
-      this.bindEvents();
-    },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-      document.addEventListener('deviceready', this.onDeviceReady, false);
+/*jslint browser: true*/
+/*jslint white: true */
+/*global $, Parse, console, jQuery, alert, WifiWizard*/
 
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
+$(function() {
 
-      $('#connect').on('click', mainApp);
-      //mainApp();//app.receivedEvent('deviceready');
-    },
-    // Update DOM on a Received Event
-    /*receivedEvent: function(id) {
-    var parentElement = document.getElementById(id);
-    var listeningElement = parentElement.querySelector('.listening');
-    var receivedElement = parentElement.querySelector('.received');
+    "use strict";
 
-    listeningElement.setAttribute('style', 'display:none;');
-    receivedElement.setAttribute('style', 'display:block;');
+    var bestWifi;
+    var hotSpotFound = 0;
+    var currentLocation = "";
 
-  }
-  console.log('Received Event: ' + id);*/
-};
-
-app.initialize();
-
-
-function mainApp(){
-  //  localStorage.setItem("60:a4:4c:67:b8:80", JSON.stringify({SSID: "JaagaHotspot", pass:"jaagajaaga"}));
-  function addWifi (BSSID){
-    var wifi = JSON.parse(localStorage.getItem(BSSID));
-    var formattedWifi = WifiWizard.formatWPAConfig(wifi.SSID, wifi.pass);
-    WifiWizard.addNetwork(formattedWifi, connectWifi(wifi), error);
-    //WifiWizard.connectNetwork(wifi.SSID, win, error);
-  }
-
-  function connectWifi(wifi) {
-    //console.log(message);
-    WifiWizard.connectNetwork(wifi.SSID, win, error);
-    //wifiConnect();
-  }
-
-  function win(message) {
-    console.log(message);
-  }
-
-  function error (err) {
-    console.log(err);
-  }
-
-
-
-WifiWizard.getScanResults(listHandler);
-function listHandler(results) {
-  function success(message) {
-    console.log(message);}
-
-    _.each(results, function(element){
-      if(_.has(localStorage,element.BSSID)){
-        addWifi(element.BSSID);
-      }
-
-      //console.log(element.BSSID);
-    });
-  }
-
-  var AP = Parse.Object.extend("AP");
-  var WifiNetworks = Parse.Collection.extend({model: AP});
-  wifiNetworks = new WifiNetworks();
-  // Sync
-  wifiNetworks.fetch({
-    success: function(collection) {
-      collection.each(function(object) {
-        var objJSON = object.toJSON();
-        console.log(objJSON);
-        localStorage.setItem(objJSON.BSSID, JSON.stringify(objJSON));
-
-      });
-    },
-    error: function(collection, error) {
-      console.log(error);// The collection could not be retrieved.
+    function win(message) {
+        console.log(message);
     }
-  });
 
-  /*var addToStatus =  function(message) {
-  console.log(message);
-  var newP = document.createElement("p");
-  var node = document.createTextNode(message);
-  var status = document.getElementById("status");
-  newP.appendChild(node);
-  status.insertBefore(newP, status.firstChild);
-};
+    function fail(message) {
+        console.log(message);
+    }
 
-test = {
-addNetwork: function() {
+    function connectON() {
 
-var ssid =  document.getElementById("SSID").value;
-var pass = document.getElementById("password").value;
+        if (hotSpotFound === 0) {
+            console.log("No known Hotspot found");
+        } else if (hotSpotFound === 1) {
+            // console.log("Attempting to connect to ", bestWifi.SSID);
+            var formattedWifi = WifiWizard.formatWPAConfig(bestWifi.SSID, bestWifi.pass);
+            WifiWizard.addNetwork(formattedWifi, win, fail);
+            WifiWizard.connectNetwork(bestWifi.SSID, win, fail);
+            setTimeout(function() {
+                WifiWizard.disconnectNetwork(bestWifi.SSID, win, fail);
+                WifiWizard.removeNetwork(bestWifi.SSID, win, fail);
+                alert("Your session has timed out");
+            }, 10000);
+        }
 
-var wifiConfiguration = WifiWizard.formatWifiConfig(ssid, pass, 'WPA');
-WifiWizard.addNetwork(wifiConfiguration, addToStatus, addToStatus);
-addToStatus(wifiConfiguration.SSID + " " + wifiConfiguration.Password);
-addToStatus("Adding Network...");
-},
+    }
 
-removeNetwork: function() {
-var ssid =  document.getElementById("SSID").value;
-addToStatus("Removing network: " + ssid);
-WifiWizard.removeNetwork(ssid, addToStatus, addToStatus);
-},
+    var app = {
 
-handleList: function(networkList) {
-addToStatus(networkList.join(" "));
-},
+        // Application Constructor
+        initialize: function() {
 
-listNetworks: function() {
-WifiWizard.listNetworks(test.handleList);
-addToStatus("Listing networks...");
-},
+            this.bindEvents();
 
-disconnect: function() {
-var ssid =  document.getElementById("SSID").value;
-addToStatus("Disconnecting: " + ssid);
-WifiWizard.disconnectNetwork(ssid, addToStatus, addToStatus);
-},
+        },
 
-connect: function() {
-var ssid =  document.getElementById("SSID").value;
-addToStatus("Connecting: " + ssid);
-WifiWizard.connectNetwork(ssid, addToStatus, addToStatus);
-},
+        // Bind Event Listeners
+        //
+        // Bind any events that are required on startup. Common events are:
+        // 'load', 'deviceready', 'offline', and 'online'.
+        bindEvents: function() {
+            document.addEventListener('deviceready', this.onDeviceReady, false);
 
-scanNetworks: function() {
-console.log('scanning Networks');
-WifiWizard.getScanResults(parseSave);
-function parseSave (list) {
-_.each(list, saveNow);
-function saveNow (item) {
-var wifiObject = new WifiObject();
-wifiObject.save({SSID: item.SSID, BSSID: item.BSSID}).then(function(object) {
-console.log(item.SSID);
-});}
-}
-},
+        },
 
-toJSON: function(list) {
-this.addToStatus(JSON.stringify(list));
-_.each(list,this.parseSave);
+        // deviceready Event Handler
+        //
+        // The scope of 'this' is the event. In order to call the 'receivedEvent'
+        // function, we must explicitly call 'app.receivedEvent(...);'
+        onDeviceReady: function() {
 
-},
+            function enableWifi() {
 
+                //looks like this function is buggy - returns true all the time
+                WifiWizard.setWifiEnabled(true, win, fail);
+                setTimeout(function(){
+                    //do nothing
+                }, 2000); 
+   
+            }
 
+            //enable wifi if it isn't already
+            WifiWizard.isWifiEnabled(win, enableWifi);
 
-clear: function() {
-document.getElementById("status").innerHTML="";
-addToStatus("WifiTest Cleared.");
-}
-};
+            
+            function scanWifi() {
 
-Parse.initialize("1pabmbMrzkDWwDeIBGdZ3sgAnf7YDxlvesn3UDMz", "Q85sXPpbEk4k0C0WTI3N0KVjpFq8NEfwXeegSrqm");
-var TestObject = Parse.Object.extend("TestObject");
-var testObject = new TestObject();
-testObject.save({foo: "bar"}).then(function(object) {
-addToStatus("Parse! it worked");
-});
-var WifiObject = Parse.Object.extend("WifiObject");
+                function listHandler(results) {
 
-$('#scan').on("tap", test.scanNetworks);
-$('#clear').on("tap", test.clear);*/
-}
+                    var sigLevel = 0;
+
+                    // console.log("The following networks were discovered:\n", results);
+
+                    _.each(results, function(element) {
+
+                        if (_.has(localStorage, element.BSSID)) {
+
+                            if (element.level > sigLevel) {
+                                sigLevel = element.level;
+                                bestWifi = JSON.parse(localStorage.getItem(element.BSSID));
+                                currentLocation = bestWifi.location;
+                                // console.log(currentLocation);
+                                $('#location span').text(currentLocation);
+                            }
+
+                            hotSpotFound = 1;
+
+                        }
+
+                    });
+
+                }
+
+                WifiWizard.getScanResults(listHandler, fail);
+            }
+
+            //Download list from Parse as soon as app is launched
+            //This fails gracefully if there is not network connection available
+
+            Parse.initialize("1pabmbMrzkDWwDeIBGdZ3sgAnf7YDxlvesn3UDMz", "Q85sXPpbEk4k0C0WTI3N0KVjpFq8NEfwXeegSrqm");
+            var AP = Parse.Object.extend("AP");
+            var WifiNetworks = Parse.Collection.extend({
+                model: AP
+            });
+            var wifiNetworks = new WifiNetworks();
+
+            // Sync
+
+            wifiNetworks.fetch({
+
+                success: function(collection) {
+                    collection.each(function(object) {
+                        var objJSON = object.toJSON();
+                        localStorage.setItem(objJSON.BSSID, JSON.stringify(objJSON));
+
+                    });
+                },
+
+                error: function(collection, error) {
+                    console.log(collection);
+                    console.log(error); // The collection could not be retrieved.
+                }
+            });
+
+            scanWifi();
+
+            $('#connect').on('click', connectON);
+        },
+
+    };
+
+    app.initialize();
+
 });

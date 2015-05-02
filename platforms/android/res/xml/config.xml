@@ -10,20 +10,18 @@
     <feature name="NetworkStatus">
         <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
     </feature>
-    <feature name="Vibration">
-        <param name="android-package" value="org.apache.cordova.vibration.Vibration" />
-    </feature>
     <feature name="WifiWizard">
         <param name="android-package" value="com.pylonproducts.wifiwizard.WifiWizard" />
         <param name="onload" value="true" />
     </feature>
-    <name>jQM Starter App</name>
+    <name>connectON</name>
     <description>
-        A template Apache Cordova application using jQuery Mobile
+        connect everywhere
     </description>
-    <author email="author@example.com" href="http://example.com">
-      Lou Franco
+    <author email="tej@jaaga.in" href="http://jaaga.in">
+      Tej Pochiraju
     </author>
+    <icon height="57" src="on.jpg" width="57" />
     <content src="index.html" />
     <access origin="*" />
     <preference name="StatusBarOverlaysWebView" value="false" />

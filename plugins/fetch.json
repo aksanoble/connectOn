@@ -3,6 +3,8 @@
         "source": {
             "type": "registry",
             "id": "com.pylonproducts.wifiwizard"
-        }
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
