@@ -19,6 +19,8 @@ $(function() {
     }
 
     function connectON() {
+        //Just in case Wifi is Disabled
+        app.enableWifi();
 
         if (hotSpotFound === 0) {
             console.log("No known Hotspot found");
@@ -54,56 +56,50 @@ $(function() {
 
         },
 
+        enableWifi: function() {
+          WifiWizard.setWifiEnabled(true, this.scanWifi, this.enableWifi);
+        },
+
+        scanWifi: function(){
+
+          function listHandler(results) {
+          console.log(JSON.stringify(results));
+              var sigLevel = 0;
+
+              // console.log("The following networks were discovered:\n", results);
+
+              _.each(results, function(element) {
+
+                  if (_.has(localStorage, element.BSSID)) {
+
+                      if (element.level > sigLevel) {
+                          sigLevel = element.level;
+                          bestWifi = JSON.parse(localStorage.getItem(element.BSSID));
+                          currentLocation = bestWifi.location;
+                          // console.log(currentLocation);
+                          $('#location span').text(currentLocation);
+                      }
+
+                      hotSpotFound = 1;
+
+                  }
+
+              });
+
+          }
+
+          WifiWizard.getScanResults(listHandler, app.enableWifi);
+      },
+
+
+
         // deviceready Event Handler
         //
         // The scope of 'this' is the event. In order to call the 'receivedEvent'
         // function, we must explicitly call 'app.receivedEvent(...);'
         onDeviceReady: function() {
-
-            function enableWifi() {
-
-                //looks like this function is buggy - returns true all the time
-                WifiWizard.setWifiEnabled(true, win, fail);
-                setTimeout(function(){
-                    //do nothing
-                }, 2000); 
-   
-            }
-
-            //enable wifi if it isn't already
-            WifiWizard.isWifiEnabled(win, enableWifi);
-
-            
-            function scanWifi() {
-
-                function listHandler(results) {
-
-                    var sigLevel = 0;
-
-                    // console.log("The following networks were discovered:\n", results);
-
-                    _.each(results, function(element) {
-
-                        if (_.has(localStorage, element.BSSID)) {
-
-                            if (element.level > sigLevel) {
-                                sigLevel = element.level;
-                                bestWifi = JSON.parse(localStorage.getItem(element.BSSID));
-                                currentLocation = bestWifi.location;
-                                // console.log(currentLocation);
-                                $('#location span').text(currentLocation);
-                            }
-
-                            hotSpotFound = 1;
-
-                        }
-
-                    });
-
-                }
-
-                WifiWizard.getScanResults(listHandler, fail);
-            }
+        //enable wifi if it isn't already
+            app.enableWifi();
 
             //Download list from Parse as soon as app is launched
             //This fails gracefully if there is not network connection available
@@ -133,10 +129,10 @@ $(function() {
                 }
             });
 
-            scanWifi();
+            //scanWifi();
 
             $('#connect').on('click', connectON);
-        },
+        }
 
     };
 
